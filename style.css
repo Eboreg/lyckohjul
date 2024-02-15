@@ -1,0 +1,146 @@
+body {
+    align-items: center;
+    background-color: #ddd;
+    box-sizing: border-box;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+    margin: 0;
+    overflow: hidden;
+}
+
+.container {
+    align-items: center;
+    border: 2px solid grey;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 24px);
+    margin: 10px;
+    position: relative;
+    width: calc(100% - 24px);
+}
+
+.container-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .4);
+    z-index: 1;
+    display: none;
+}
+
+.container-overlay.show {
+    display: block;
+}
+
+.left-margin {
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    position: absolute;
+    width: calc(((100vw - 24px - 100vh + 168px) / 2) - 40px);
+}
+
+.nav-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footnotes {
+    font-size: 12px;
+}
+
+.nav-buttons button {
+    font-size: large;
+    background-color: lightgray;
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-align: left;
+}
+
+.nav-buttons button.active {
+    background-color: white;
+}
+
+.arrow-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.arrow {
+    background: #333;
+    clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+    height: 70px;
+    position: absolute;
+    width: 10px;
+    z-index: 1;
+}
+
+.wheel-container {
+    align-items: center;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    justify-content: center;
+    margin: 45px 0 0;
+    position: relative;
+    z-index: 2;
+}
+
+.wheel {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 10px dotted;
+    flex: 1 0 auto;
+    overflow: hidden;
+    position: relative;
+}
+
+.mao {
+    height: max-content;
+    position: absolute;
+    width: max-content;
+}
+
+.wheel .slice {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: start;
+    position: absolute;
+    transform-origin: center;
+    width: 100%;
+}
+
+.slice-label {
+    bottom: -25%;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    height: 1em;
+    line-height: 1em;
+    position: relative;
+    text-align: right;
+    width: 50%;
+}
+
+.slice-label.small {
+    font-size: 14px;
+}
+
+.spin-button {
+    background: orange;
+    border-radius: 10px;
+    font-size: xx-large;
+    font-weight: bold;
+    line-height: 45px;
+    margin: 20px;
+    padding: 5px 20px;
+}
