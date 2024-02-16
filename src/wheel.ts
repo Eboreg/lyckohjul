@@ -182,22 +182,18 @@ export class Wheel {
         ];
 
         this.currentTopSlice?.classList.remove("top");
-        this.wheelAudio.addEventListener("ended", () => {
-            this.wheelAudio.load();
-        });
-        this.spinnnnAudio.addEventListener("ended", () => {
-            this.spinnnnAudio.load();
-        });
         this.overlay.style.display = "block";
         void this.wheelAudio.play();
         void this.spinnnnAudio.play();
-        console.log(Date.now(), "animation start");
+
         this.wheel.animate(keyframes, { duration: duration, fill: "both" })
             .onfinish = () => {
                 this.overlay.style.display = "none";
                 this.currentRotation = rotation;
                 this.currentTopSlice = this.slices[nextTopSliceIdx];
                 this.currentTopSlice.classList.add("top");
+                this.spinnnnAudio.load();
+                this.wheelAudio.load();
             };
         if (this.mao != null) this.mao.animate(keyframes, { duration: duration + 2000, fill: "both" });
     }
