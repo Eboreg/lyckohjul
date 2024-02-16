@@ -10,9 +10,11 @@ export class Wheel {
     readonly sliceColors: string[];
     readonly footnotes: Element;
     readonly overlay: HTMLElement;
-    readonly slices: string[];
+    readonly slices: HTMLElement[] = [];
+    readonly errors: Element;
 
     currentRotation: number = 0;
+    currentTopSlice?: HTMLElement;
 
     constructor(id: string, name: string, slices: string[]) {
         const html = `
@@ -20,6 +22,7 @@ export class Wheel {
         <div class="left-margin">
             <div class="nav-buttons"></div>
             <div class="footnotes"></div>
+            <div class="errors"></div>
         </div>
         <div class="arrow-container"><div class="arrow"></div></div>
         <div class="wheel-container">
@@ -36,15 +39,14 @@ export class Wheel {
         document.body.appendChild(anchor);
         document.body.appendChild(container);
 
-        if (slices.length % 2 == 0) this.sliceColors = ["red", "blue"];
-        else if (slices.length % 3 == 0 || (slices.length + 1) % 3 == 0)
+        if (slices.length % 2 == 0 && slices.length > 4) this.sliceColors = ["red", "blue"];
+        else if ((slices.length - 1) % 3 != 0 && slices.length > 5)
             this.sliceColors = ["red", "blue", "darkgreen"];
-        else if ((slices.length + 1) % 4 == 0 || (slices.length + 2) % 4 == 0)
+        else if ((slices.length - 1) % 4 != 0)
             this.sliceColors = ["red", "blue", "darkgreen", "darkmagenta"];
         else this.sliceColors = ["red", "blue", "darkred", "darkgreen", "darkmagenta"];
 
         this.name = name;
-        this.slices = slices;
         this.wheel = container.querySelector(".wheel") as HTMLElement;
         this.spinButton = container.querySelector(".spin-button") as HTMLButtonElement;
         this.mao = container.querySelector(".mao");
@@ -53,10 +55,23 @@ export class Wheel {
         this.id = id;
         this.spinButton.addEventListener("click", () => { this.spin() });
         this.overlay = container.querySelector(".container-overlay") as HTMLElement;
+        this.errors = container.querySelector(".errors") as Element;
 
-        for (let i = 0; i < slices.length; i++) {
-            this.addSlice(slices[i], i, slices.length);
+        if (slices.length < 5) {
+            this.addError("We need at least 5 slices at the moment.");
+        } else {
+            for (let i = 0; i < slices.length; i++) {
+                this.addSlice(slices[i], i, slices.length);
+            }
+            this.currentTopSlice = this.slices[0];
         }
+    }
+
+    addError(text: string) {
+        const elem = document.createElement("p");
+        elem.textContent = text;
+        this.errors.appendChild(elem);
+        this.errors.classList.add("show");
     }
 
     addFootnotes(footnotes: string[]): Wheel {
@@ -89,7 +104,7 @@ export class Wheel {
 
     addSlice(text: string, index: number, totalSliceCount: number): Wheel {
         const turnsPerSlice = 1 / totalSliceCount;
-        const rotation = (turnsPerSlice * index);
+        const rotation = turnsPerSlice * index;
         const slice = document.createElement("div");
         const label = document.createElement("div");
         const labelText = document.createElement("span");
@@ -134,6 +149,7 @@ export class Wheel {
         label.appendChild(labelText);
         slice.appendChild(label);
         this.wheel.appendChild(slice);
+        this.slices.push(slice);
 
         return this;
     }
@@ -155,13 +171,16 @@ export class Wheel {
     }
 
     spin() {
+        const turnsPerSlice = 1 / this.slices.length;
         const rotation = this.getNextRotation();
+        const nextTopSliceIdx = this.slices.length - Math.floor((rotation / turnsPerSlice) % this.slices.length);
         const duration = 13000;
         const keyframes = [
             { transform: `rotate(${this.currentRotation}turn)`, easing: "cubic-bezier(0.1, 0.2, 0.2, 1.02)" },
             { transform: `rotate(${rotation}turn)` },
         ];
 
+        this.currentTopSlice?.classList.remove("top");
         this.wheelAudio.addEventListener("ended", () => {
             this.wheelAudio.load();
         });
@@ -176,6 +195,8 @@ export class Wheel {
             .onfinish = () => {
                 this.overlay.style.display = "none";
                 this.currentRotation = rotation;
+                this.currentTopSlice = this.slices[nextTopSliceIdx];
+                this.currentTopSlice.classList.add("top");
             };
         if (this.mao != null) this.mao.animate(keyframes, { duration: duration + 2000, fill: "both" });
     }

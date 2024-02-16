@@ -22,12 +22,12 @@ body {
 }
 
 .container-overlay {
+    background-color: rgba(0, 0, 0, .4);
+    display: none;
+    height: 100%;
     position: absolute;
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, .4);
     z-index: 1;
-    display: none;
 }
 
 .container-overlay.show {
@@ -49,14 +49,32 @@ body {
     gap: 10px;
 }
 
-.footnotes {
+.left-margin .footnotes {
     font-size: 12px;
 }
 
+.left-margin .errors {
+    border-radius: 5px;
+    border: 2px solid red;
+    color: red;
+    display: none;
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 0 10px;
+}
+
+.left-margin .errors.show {
+    display: block;
+}
+
+.left-margin .errors p {
+    margin: 10px 0;
+}
+
 .nav-buttons button {
-    font-size: large;
     background-color: lightgray;
     border-radius: 5px;
+    font-size: large;
     padding: 5px 10px;
     text-align: left;
 }
@@ -110,6 +128,7 @@ body {
 
 .wheel .slice {
     align-items: center;
+    color: white;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -119,9 +138,13 @@ body {
     width: 100%;
 }
 
+.wheel .slice.top {
+    background-color: white !important;
+    color: black;
+}
+
 .slice-label {
     bottom: -25%;
-    color: white;
     font-size: 16px;
     font-weight: bold;
     height: 1em;
