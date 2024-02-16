@@ -173,7 +173,8 @@ export class Wheel {
     spin() {
         const turnsPerSlice = 1 / this.slices.length;
         const rotation = this.getNextRotation();
-        const nextTopSliceIdx = this.slices.length - Math.floor((rotation / turnsPerSlice) % this.slices.length);
+        const nextTopSliceIdx =
+            (this.slices.length - Math.floor((rotation / turnsPerSlice) % this.slices.length)) % this.slices.length;
         const duration = 13000;
         const keyframes = [
             { transform: `rotate(${this.currentRotation}turn)`, easing: "cubic-bezier(0.1, 0.2, 0.2, 1.02)" },
