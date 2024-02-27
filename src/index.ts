@@ -8,6 +8,13 @@ function shuffleArray(array: any[]) {
 }
 
 window.onload = () => {
+    const url = new URL(location.href);
+
+    if (url.hash) {
+        url.hash = "";
+        location.href = url.href;
+    }
+
     const wheels: Wheel[] = [];
     const geografi = [
         "Svealand",
