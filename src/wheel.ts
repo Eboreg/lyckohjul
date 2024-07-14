@@ -1,3 +1,8 @@
+export interface Footnote {
+    number: number;
+    text: string;
+}
+
 export class Wheel {
     readonly wheel: HTMLElement;
     readonly spinButton: HTMLButtonElement;
@@ -74,10 +79,16 @@ export class Wheel {
         this.errors.classList.add("show");
     }
 
-    addFootnotes(footnotes: string[]): Wheel {
+    addFootnotes(footnotes: Footnote[]): Wheel {
         for (const footnote of footnotes) {
             const elem = document.createElement("p");
-            elem.textContent = footnote;
+            const sup = document.createElement("sup");
+            const span = document.createElement("span");
+            sup.textContent = footnote.number.toString();
+            span.textContent = footnote.text;
+            elem.appendChild(sup);
+            elem.appendChild(span);
+            elem.classList.add("footnote");
             this.footnotes.appendChild(elem);
         }
         return this;
@@ -144,7 +155,7 @@ export class Wheel {
         label.style.left = `${textLeft}px`;
         label.style.width = `${innerLength}px`;
 
-        labelText.textContent = text;
+        labelText.innerHTML = text;
 
         label.appendChild(labelText);
         slice.appendChild(label);

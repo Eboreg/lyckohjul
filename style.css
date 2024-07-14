@@ -167,3 +167,7 @@ body {
     margin: 20px;
     padding: 5px 20px;
 }
+
+p.footnote sup {
+    margin-right: 5px;
+}
